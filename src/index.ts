@@ -103,7 +103,14 @@ interface IRequestObj {
   async: boolean;
 }
 
-const monitorRepeatRequest = () => {
+interface IOptions {
+  isShowToast: boolean;
+  toastTime: number;
+}
+
+const monitorRepeatRequest = (options: IOptions) => {
+  const { isShowToast = true, toastTime = 3 } = options;
+
   let requestCache = new LRUCache(30);
   let requestInfo: IRequestObj = {} as IRequestObj;
 
@@ -124,18 +131,13 @@ const monitorRepeatRequest = () => {
     let times = 1;
     if (curRequest && Date.now() - curRequest.timestamp < 1000) {
       times = curRequest.times + 1;
-      let errMsg = "";
       // 1s内连续发送
       if (JSON.stringify(body) === curRequest.body) {
         // 相同参数
-        errMsg = `${url}在1s内连续请求${times}次，且参数相同，请检查`;
-        toast(errMsg);
-      } else {
-        // 不同参数
-        errMsg = `${url}在1s内连续请求${times}次，不过请求参数不同，请检查`;
-        toast(errMsg);
+        const errMsg = `${url}在1s内连续请求${times}次，且参数相同，请检查`;
+        isShowToast && toast(errMsg);
+        console.log("【重复请求】", errMsg);
       }
-      console.log("【重复请求】", errMsg);
     }
     const cacheValue: IRequestCache = {
       url,
@@ -169,7 +171,7 @@ const monitorRepeatRequest = () => {
     document.body.appendChild(tipsDom);
     setTimeout(() => {
       document.body.removeChild(tipsDom);
-    }, 10000);
+    }, toastTime);
   };
 
   const originSend = XMLHttpRequest.prototype.send;
