@@ -6,7 +6,7 @@
   </a>
 </p>
 
-> 一个可以帮助你检查项目中是否存在重复请求的工具。使用后会自动监听请求，当发现1秒内有发出多次相同的请求时，会toast提示并在控制台上打印请求信息。
+> A tool that can help you check whether there are duplicate requests in your project. After use, the request will be automatically monitored. When it is found that the same request has been sent multiple times within 1 second, it will prompt toast and print the request information on the console.
 
 ## Usage
 
@@ -14,13 +14,20 @@
 import repeatRequestMinder from 'repeat-request-minder';
 repeatRequestMinder();
 ```
-也可以配置toast是否显示以及toast显示的时长(默认显示toast，时长为3秒)
+
+You can also configure whether toast is displayed and the duration of toast display (default display toast, duration is 3 seconds)
+
 ```js
 repeatRequestMinder({
   isShowToast: true,
   toastTime: 10000
 });
 ```
+
+As well, if you don't want to use it by call the function yourself, you can use the webpack plugin to help you.
+
+Here is the plugin [
+repeat-request-minder-webpack-plugin](https://github.com/SugarTurboS/repeat-request-minder-webpack-plugin)
 
 ## Author
 
