@@ -14,6 +14,13 @@
 import repeatRequestMinder from 'repeat-request-minder';
 repeatRequestMinder();
 ```
+也可以配置toast是否显示以及toast显示的时长(默认显示toast，时长为3秒)
+```js
+repeatRequestMinder({
+  isShowToast: true,
+  toastTime: 10000
+});
+```
 
 ## Author
 
