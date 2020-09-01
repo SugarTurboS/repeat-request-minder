@@ -108,11 +108,11 @@ interface IOptions {
   toastTime: number;
 }
 
-const monitorRepeatRequest = (options: IOptions) => {
-  const { isShowToast = true, toastTime = 3 } = options;
+const monitorRepeatRequest = (options: IOptions = { isShowToast: true, toastTime: 3000 }) => {
+  const { isShowToast, toastTime } = options;
 
   let requestCache = new LRUCache(30);
-  let requestInfo: IRequestObj = {} as IRequestObj;
+  let requestInfo = {} as IRequestObj;
 
   const onXMLOpen = (params) => {
     requestInfo.method = params[0];
@@ -125,7 +125,7 @@ const monitorRepeatRequest = (options: IOptions) => {
     checkIsRepeat(requestInfo);
   };
 
-  const checkIsRepeat = (requestObj: IRequestObj) => {
+  function checkIsRepeat(requestObj: IRequestObj) {
     const { url, body } = requestObj;
     const curRequest = requestCache.get(url);
     let times = 1;
@@ -148,7 +148,7 @@ const monitorRepeatRequest = (options: IOptions) => {
     requestCache.put(url, cacheValue);
   };
 
-  const toast = (msg) => {
+  function toast(msg) {
     const styles = {
       background: "rgba(51, 51, 51, 0.8)",
       border: "1px solid rgba(255, 255, 255, 0.2)",
